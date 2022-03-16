@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>All rockets</title>
+		<!--<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>-->
+	<script>
+		console.log("chuj");
+		$(document).ready(function(){
+			$.ajax({
+				'method': 'GET',
+				'url': '/api/rockets/',
+				'success': function(result){
+					let res_len = result.rockets.length;
+					for(let i=0; i< res_len; i++){
+						$("<div>",{
+							'html':result[i].name
+							}).appendTo("#list_container");
+					}
+				}
+			});
+		
+		});
+	</script>	
+	</head>
+	<body>
+		<h1>Rockets list:</h1>
+		<div id="list_container">
+		</div>
+	</body>
+	
+</html>

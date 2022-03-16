@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<title>All launches</title>
+		<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">	
+	</head>
+	<body>
+		<h1>Launches list:</h1>
+		<div id="list_container" class="list-group">
+		</div>
+		<div>
+		<br/>
+		<h3>Add new record:</h3>
+			<form id="new_launch_form" action="/api/launches" method="post">
+				<label for="mission_name">Mission Name: </label><br/>
+				<input type="text" name="mission_name" id="mission_name"/><br/>
+				<label for="launch_date">Date:</label><br/>
+				<input type="datetime-local" name="launch_date" id="launch_date"/><br/>
+				<label for="tons_launched">Tons launched: </label><br/>
+				<input type="number" step="0.01" name="tons_launched" id="tons_launched"/><br/>
+				<label for="vehicle">Vehicle: </label><br/>
+				<select id="vehicle" name="vehicle">
+					{{range .Rockets}}
+						<option value="{{ .Id }}">{{ .Name }}</option>
+					{{end}}
+				</select><br/>
+				<label for="outcome">Outcome:</label><br/>
+				<select id="outcome" name="outcome">
+					<option value="success">Success</option>
+					<option value="failure">Failure</option>
+					<option value="partial_failure">Partial failure</option>
+				</select><br/>
+				<input type="submit" value="Create"/>
+			</form>
+		</div>
+	</body>
+	<script>
+		$(document).ready(function(){
+			$.ajax({
+				'method': 'GET',
+				'url': '/api/launches',
+				'success': function(result){
+					let res_len = result.length;
+					for(let i=0; i< res_len; i++){
+						$("<div>",{
+							'class': "list-group-item",
+							'html':result[i].mission_name + ' - ' + result[i].launch_date + ' - ' + result[i].outcome
+							}).appendTo("#list_container");
+					}
+				}
+			});
+		
+		});
+	</script>
+	
+</html>

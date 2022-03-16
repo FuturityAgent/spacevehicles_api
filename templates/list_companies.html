@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>All companies</title>
+		<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">	
+	</head>
+	<body>
+		<h1>Companies list:</h1>
+		<div id="list_container" class="list-group">
+		</div>
+		<div>
+		<br/>
+		<h3>Add new record:</h3>
+			<form id="new_company_form" action="/api/companies" method="post">
+				<label for="name">Name: </label><br/>
+				<input type="text" name="name" id="name"/><br/>
+				<label for="year_founded">Year founded:</label><br/>
+				<input type="number" name="year_founded" id="year_founded"/><br/>
+				<label for="ceo_name">CEO/administrator name: </label><br/>
+				<input type="text" name="ceo_name" id="ceo_name"/><br/>
+				<label for="country_origin">Country of origin(2-3 letter code): </label><br/>
+				<input type="text" name="country_origin" id="country_origin"/><br/>
+				<input type="submit" value="Create"/>
+			</form>
+		</div>
+	</body>
+	<script>
+		$(document).ready(function(){
+			$.ajax({
+				'method': 'GET',
+				'url': '/api/companies',
+				'success': function(result){
+					let res_len = result.length;
+					for(let i=0; i< res_len; i++){
+						$("<div>",{
+							'class': "list-group-item",
+							'html':result[i].name + ' - since ' + result[i].year_founded + ' - from ' + result[i].country_origin
+							}).appendTo("#list_container");
+					}
+				}
+			});
+		
+		});
+	</script>
+	
+</html>
